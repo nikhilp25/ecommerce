@@ -15,6 +15,7 @@ const UserRepo = require("./user");
 const ProductRepo = require("./product");
 const ShoppingRepo = require("./shopping");
 const CartRepo = require("./cart");
+const PaymentRepo = require("./payment");
 
 const userRepoInstance = new UserRepo(
   userInstance,
@@ -39,10 +40,17 @@ const cartRepoInstance = new CartRepo(
   shoppingSessionInstance,
   cartItemInstance
 );
+const paymentRepoInstance = new PaymentRepo(
+  userInstance,
+  productInstance,
+  shoppingSessionInstance,
+  cartItemInstance
+);
 
 module.exports = {
   userRepoInstance,
   productRepoInstance,
   shoppingRepoInstance,
   cartRepoInstance,
+  paymentRepoInstance,
 };
