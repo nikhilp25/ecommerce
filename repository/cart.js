@@ -14,11 +14,9 @@ module.exports = class CartRepo {
   }
   addProductToCart = async ({ productId, id, quantity }) => {
     try {
-      console.log("-=-=-==->", id);
       const sessionData = await this.shoppingSessionInstance.findOne({
         where: { user_id: id },
       });
-      console.log(sessionData);
 
       if (!sessionData) {
         return { message: "Invalid credentials" };

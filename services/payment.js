@@ -8,28 +8,31 @@ module.exports = class PaymentService {
 
   makePayment = async (cartItem) => {
     const priceData = [];
-    cartItem.map((data) => {
-      let priceObj = {};
-      priceObj = {
-        price_data: {
-          currency: "usd",
-          product_data: {
-            name: data.name,
+    cartItem &&
+      cartItem.map((data) => {
+        let priceObj = {};
+        priceObj = {
+          price_data: {
+            currency: "usd",
+            product_data: {
+              name: data.name,
+            },
+            unit_amount: data.price,
           },
-          unit_amount: data.price,
-        },
-        quantity: data.quantity,
-      };
-      priceData.push(priceObj);
-    });
-    const session = await stripe.checkout.sessions.create({
-      success_url:
-        "http://localhost:8000/api/v1/payment/success?session_id={CHECKOUT_SESSION_ID}",
-      cancel_url: "http://localhost:8000/api/v1/payment/cancel",
-      line_items: priceData,
-      mode: "payment",
-    });
-    return session;
+          quantity: data.quantity,
+        };
+        priceData.push(priceObj);
+      });
+    if (priceData.length > 0) {
+      const session = await stripe.checkout.sessions.create({
+        success_url:
+          "http://localhost:8000/api/v1/payment/success?session_id={CHECKOUT_SESSION_ID}",
+        cancel_url: "http://localhost:8000/api/v1/payment/cancel",
+        line_items: priceData,
+        mode: "payment",
+      });
+      return session;
+    }
     // res.redirect(session.url);
   };
   getSuccessData = async (sessionId) => {
@@ -39,7 +42,7 @@ module.exports = class PaymentService {
       }),
       stripe.checkout.sessions.listLineItems(sessionId),
     ]);
-    console.log(JSON.stringify(await result));
+    // this.paymentRepoInstance.updatePaymentDetail();
     return await result;
   };
 };

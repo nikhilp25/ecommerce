@@ -3,7 +3,7 @@ const router = express.Router();
 const { productServiceInstance } = require("../../services");
 const authenticateJWT = require("../../auth/authMiddleware");
 
-router.get("/getAllProducts", authenticateJWT, async (req, res) => {
+router.get("/getAllProducts", async (req, res) => {
   const data = await productServiceInstance.getAllProduct();
   res.send(data);
 });

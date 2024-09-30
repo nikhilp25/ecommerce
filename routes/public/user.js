@@ -24,7 +24,6 @@ router.post("/signUp", async (req, res) => {
       mobileNo,
       username,
     });
-    console.log(process.env.JWT_TOKEN);
     const token = jwt.sign({ id: user.id }, process.env.JWT_TOKEN, {
       expiresIn: "1h",
     });
@@ -49,10 +48,9 @@ router.post("/login", async (req, res) => {
     const token = jwt.sign({ id: user.id }, process.env.JWT_TOKEN, {
       expiresIn: "1h",
     });
-    res.status(201).json({ token });
+    res.status(201).json({ token, user });
   } catch (err) {
     console.error(err.message);
-    console.log("Route layer");
     res.status(500).send("Server error");
   }
 });
@@ -67,7 +65,6 @@ router.post("/userAddress", authenticateJWT, async (req, res) => {
       telephoneNo,
       mobileNo,
     } = req.body;
-    console.log(req.user);
     const { id } = req.user;
 
     const user = await userServiceInstance.saveUserAddress({

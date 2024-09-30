@@ -12,7 +12,8 @@ router.post("/checkout", authenticateJWT, async (req, res) => {
     //   { name: "Mobile", price: 10000, quantity: 1 },
     //   { name: "TV", price: 12000, quantity: 1 },
     // ];
-    const cartItem = req.body.cartItem;
+    const cartItem = req.body;
+
     const payment = await paymentServiceInstance.makePayment(cartItem);
     res.send(payment);
   } catch (err) {
@@ -23,7 +24,6 @@ router.get("/success", async (req, res) => {
   try {
     const sessionId = req.query.session_id;
     const result = await paymentServiceInstance.getSuccessData(sessionId);
-    console.log(result);
     res.send("Payment was successful");
   } catch (err) {
     throw err;

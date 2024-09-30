@@ -44,7 +44,8 @@ const paymentRepoInstance = new PaymentRepo(
   userInstance,
   productInstance,
   shoppingSessionInstance,
-  cartItemInstance
+  cartItemInstance,
+  userPaymentInstance
 );
 
 module.exports = {
